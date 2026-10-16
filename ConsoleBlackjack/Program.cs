@@ -1,7 +1,4 @@
-﻿using System.Net.Security;
-using System.Runtime.InteropServices;
-
-namespace ConsoleBlackjack
+﻿namespace ConsoleBlackjack
 {
     class Program
     {
@@ -12,7 +9,9 @@ namespace ConsoleBlackjack
         // RPC END
 
         // variable declarations
-        public static bool REALISTIC_CARD_DECK = true; // made static
+        public static bool REALISTIC_CARD_DECK = true;
+
+        public static readonly List<string> deck = new List<string> { "A", "A", "A", "A", "2", "2", "2", "2", "3", "3", "3", "3", "4", "4", "4", "4", "5", "5", "5", "5", "6", "6", "6", "6", "7", "7", "7", "7", "8", "8", "8", "8", "9", "9", "9", "9", "10", "10", "10", "10", "J", "J", "J", "J", "Q", "Q", "Q", "Q", "K", "K", "K", "K" };
 
         // helpers
         static int ShowMenu(string title, string body, string[] options)
@@ -80,13 +79,33 @@ namespace ConsoleBlackjack
             }
         }
 
+        static T GetAndRemove<T>(List<T> list)
+        {
+            if (list.Count == 0)
+            {
+                throw new ArgumentException("There isn't anything in the list!");
+            }
+            int i = Random.Shared.Next(0, list.Count);
+            T obj = list[i];
+            list.RemoveAt(i);
+            return obj;
+        }
+
         // end of helpers
 
 
         // game stuff
         static void Game()
         {
-            int[] cards = new int[0];// fixed array initialization
+            List<string> player_cards = new List<string>();
+            List<string> dealer_cards = new List<string>();
+            List<string> localdeck = new List<string>(deck);
+
+            while (true)
+            {
+                player_cards.Add(GetAndRemove(localdeck));
+                // unfinished at the moment
+            }
 
             Main();
         }
@@ -95,7 +114,7 @@ namespace ConsoleBlackjack
         {
             while (true)
             {
-                int pick = ShowMenu("Settings", "wip", new string[] { $"RealisticCardDeck ({REALISTIC_CARD_DECK})", "Exit" }); // fixed literal
+                int pick = ShowMenu("Settings", "does nothing at the moment", new string[] { $"RealisticCardDeck ({REALISTIC_CARD_DECK})", "Exit" });
                 if (pick == 0)
                 {
                     REALISTIC_CARD_DECK = !REALISTIC_CARD_DECK;
@@ -112,7 +131,7 @@ namespace ConsoleBlackjack
         // main program
         static void Main()
         {
-            int option = ShowMenu("Blackjack", "Welcome to the Blackjack main menu!\nHere, you can tweak options, or get a game running!", new string[] { "START", "Settings", "Exit" }); // fixed literal
+            int option = ShowMenu("Blackjack", "Welcome to the Blackjack main menu!\nHere, you can tweak options, or get a game running!", new string[] { "START", "Settings", "Exit" });
             Console.Clear();
             if (option == 0)
             {
